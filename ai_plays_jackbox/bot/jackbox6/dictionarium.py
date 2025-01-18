@@ -86,7 +86,7 @@ class DictionariumBot(JackBox6BotBase):
         return random.choice(choices)
 
 _DEFINITION_PROMPT = """
-You are playing Dictionarium. You need to create a definition for a word or phrase.
+You are playing Dictionarium.
 
 When generating your response, follow these rules:
 - Your personality is: {personality}
@@ -99,7 +99,7 @@ The prompt is:
 """
 
 _FAVORITE_CHOICE_PROMPT = """
-You are playing Dictionarium and you need to vote for your favorite response to the prompt {prompt}. Your options are:
+You are playing Dictionarium and you need to vote for your favorite response. {prompt}. Your options are:
 
 {options}
 
@@ -107,7 +107,7 @@ Choose your favorite by responding with the number next to your choice. Only res
 """
 
 _SYNONYM_PROMPT = """
-You are playing Dictionarium. You need to create a synonym for a word or phrase.
+You are playing Dictionarium.
 
 When generating your response, follow these rules:
 - Your personality is: {personality}
