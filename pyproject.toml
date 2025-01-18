@@ -1,0 +1,23 @@
+[tool.black]
+line-length = 120
+
+[tool.poetry]
+name = "ai_plays_jackbox"
+version = "0.0.1"
+description = ""
+readme = "README.md"
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.11.2"
+requests = "^2.32.3"
+websocket-client = "^1.8.0"
+pydantic = "^2.10.4"
+html2text = "^2024.2.26"
+loguru = "^0.7.3"
+
+ollama = "^0.4.4"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
