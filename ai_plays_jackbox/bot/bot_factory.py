@@ -1,6 +1,6 @@
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 from ai_plays_jackbox.bot.jackbox7.quiplash3 import Quiplash3Bot
-
+from ai_plays_jackbox.bot.jackbox6.dictionarium import DictionariumBot
 
 class JackBoxBotFactory:
     @staticmethod
@@ -11,6 +11,8 @@ class JackBoxBotFactory:
     ) -> JackBoxBotBase:
         if room_type == "quiplash3":
             return Quiplash3Bot(name=name, personality=personality)
+        elif room_type == "ridictionary":
+            return DictionariumBot(name=name, personality=personality)
         # elif room_type == "patentlystupid":
         #     return PatentlyStupidBot(name=name, personality=personality, model=model)
         # elif room_type == "fourbage":

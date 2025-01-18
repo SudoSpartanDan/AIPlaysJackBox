@@ -4,7 +4,6 @@ from loguru import logger
 
 from ai_plays_jackbox.ai_prompter import get_ai_response
 from ai_plays_jackbox.bot.jackbox7.bot_base import JackBox7BotBase
-from typing import Optional
 
 class Quiplash3Bot(JackBox7BotBase):
     _selected_avatar: bool = False
