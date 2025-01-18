@@ -13,4 +13,4 @@ def _get_room_code() -> str:
         if len(room_code) != 4 or not room_code.isalpha():
             print("Invalid room code; please try again")
         else:
-            return room_code
+            return room_code.upper()

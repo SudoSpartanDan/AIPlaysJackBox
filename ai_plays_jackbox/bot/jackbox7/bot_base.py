@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 
 
-class JackBox7BotBase(ABC, JackBoxBotBase):
+class JackBox7BotBase(JackBoxBotBase, ABC):
 
     @property
     def _player_operation_key(self) -> str:
@@ -18,15 +18,3 @@ class JackBox7BotBase(ABC, JackBoxBotBase):
 
     def _is_room_operation_key(self, operation_key: str) -> bool:
         return operation_key == self._room_operation_key
-
-    @abstractmethod
-    def _handle_welcome(self, data: dict) -> None:
-        pass
-
-    @abstractmethod
-    def _handle_player_operation(self, data: dict) -> None:
-        pass
-
-    @abstractmethod
-    def _handle_room_operation(self, data: dict) -> None:
-        pass

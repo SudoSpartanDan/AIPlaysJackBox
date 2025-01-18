@@ -87,7 +87,7 @@ class JackBoxBotBase(ABC):
             print(error)
 
     def _on_close(self, ws, close_status_code, close_msg) -> None:
-        if close_status_code != 1000:
+        if close_status_code != 1000 and close_status_code is not None:
             logger.warning(f"Trying to reconnect {self._name}")
             self.connect(self._room_code)
         else:

@@ -1,1 +1,1 @@
-from .bot_base import JackBoxBot
+from .bot_base import JackBoxBotBase

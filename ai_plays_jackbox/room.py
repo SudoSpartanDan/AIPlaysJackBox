@@ -2,10 +2,12 @@ from time import sleep
 
 import requests
 from loguru import logger
+import random
 
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 from ai_plays_jackbox.bot.bot_factory import JackBoxBotFactory
 from ai_plays_jackbox.constants import ECAST_HOST
+from ai_plays_jackbox.bot.bot_personality import JackBoxBotVariant
 
 
 class JackBoxRoom:
@@ -15,13 +17,13 @@ class JackBoxRoom:
         room_type = self._get_room_type(room_code)
         logger.info(f"We're playing {room_type}!")
         bot_factory = JackBoxBotFactory()
+        bots_to_make = random.sample(list(JackBoxBotVariant), num_of_bots)
 
-        # TODO: variants num_of_bots to bots_to_make
-        for _ in range(0, num_of_bots):
+        for b in bots_to_make:
             bot = bot_factory.get_bot(
                 room_type,
-                name="Some bot",
-                personality="You are funny",
+                name=b.value.name,
+                personality=b.value.personality,
             )
             self._bots.append(bot)
             bot.connect(room_code)
@@ -46,7 +48,7 @@ class JackBoxRoom:
         for b in self._bots:
             b.disconnect()
 
-    def _get_room_type(room_code: str):
+    def _get_room_type(self, room_code: str):
         response = requests.request(
             "GET",
             f"https://{ECAST_HOST}/api/v2/rooms/{room_code}",

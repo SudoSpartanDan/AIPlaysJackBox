@@ -4,7 +4,7 @@ from loguru import logger
 
 from ai_plays_jackbox.ai_prompter import get_ai_response
 from ai_plays_jackbox.bot.jackbox7.bot_base import JackBox7BotBase
-
+from typing import Optional
 
 class Quiplash3Bot(JackBox7BotBase):
     _selected_avatar: bool = False
@@ -13,10 +13,13 @@ class Quiplash3Bot(JackBox7BotBase):
         pass
 
     def _handle_player_operation(self, data: dict):
+        if not data:
+            return
         room_state = data.get("state", None)
         if not room_state:
             return
-        prompt_text = self._html_to_text(data.get("prompt", {}).get("html", ""))
+        prompt = data.get("prompt")
+        prompt_text = self._html_to_text(prompt.get("html", "")) if prompt is not None else ""
         text_key = data.get("textKey", "")
         match room_state:
             case "EnterSingleText":
@@ -30,6 +33,14 @@ class Quiplash3Bot(JackBox7BotBase):
             case "MakeSingleChoice":
                 choice = self._choose_favorite(prompt_text, data["choices"])
                 self._client_send({"action": "choose", "choice": choice})
+
+    def _handle_room_operation(self, data: dict):
+        if self._selected_avatar:
+            return
+        available_characters = [c["name"] for c in data["characters"] if c["available"]]
+        selected_character = random.choice(available_characters)
+        self._client_send({"action": "avatar", "name": selected_character})
+        self._selected_avatar = True
 
     def _generate_quip(self, prompt: str, final_round: bool = False) -> str:
         num_predict = 16
