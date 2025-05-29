@@ -1,14 +1,20 @@
 from ai_plays_jackbox import run
+from ai_plays_jackbox.llm import OllamaModel
+
+
+def _get_room_code() -> str:
+    while True:
+        room_code = input("Please enter the room code: ")
+        if len(room_code) != 4 or not room_code.isalpha():
+            print("Invalid room code; please try again")
+        else:
+            return room_code.upper()
+
+
+def main():
+    room_code = _get_room_code()
+    run(room_code, chat_model=OllamaModel(model="gemma3:12b"))
+
 
 if __name__ == "__main__":
-    # import time
-
-    # from ai_plays_jackbox.bot.jackbox7.quiplash3 import Quiplash3Bot
-
-    # bot = Quiplash3Bot()
-    # bot.connect("XXXX")
-
-    # time.sleep(2)
-
-    # bot.disconnect()
-    run()
+    main()

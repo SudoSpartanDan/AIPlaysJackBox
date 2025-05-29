@@ -13,11 +13,16 @@ python = "^3.11.2"
 requests = "^2.32.3"
 websocket-client = "^1.8.0"
 pydantic = "^2.10.4"
+openai = "^1.59.8"
 html2text = "^2024.2.26"
+python_dotenv = "^1.0.1"
 loguru = "^0.7.3"
-
 ollama = "^0.4.4"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
 isort = "^5.13.2"
+
+[tool.poetry.scripts]
+app = "main:main"
+lint = "scripts.lint:run"

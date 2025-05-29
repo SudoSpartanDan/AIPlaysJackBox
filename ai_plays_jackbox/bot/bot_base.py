@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import json
 import threading
 import traceback
@@ -8,27 +12,34 @@ from uuid import uuid4
 
 import html2text
 from loguru import logger
+from ollama import Options, chat
 from pydantic import BaseModel, Field, field_validator
 from websocket import WebSocketApp
 
 from ai_plays_jackbox.constants import ECAST_HOST
+from ai_plays_jackbox.llm import ChatModel, OllamaModel
 
 
 class JackBoxBotBase(ABC):
     _is_disconnected: bool = False
     _ws: Optional[WebSocketApp] = None
+    _ws_thread: Optional[threading.Thread] = None
     _message_sequence: int = 0
-    _player_guid: str = str(uuid4())
+    _player_guid: str
     _name: str
     _personality: str
+    _chat_model: ChatModel
 
     def __init__(
         self,
         name: str = "FunnyBot",
         personality: str = "You are the funniest bot ever.",
+        chat_model: ChatModel = OllamaModel(),
     ):
         self._name = name
         self._personality = personality
+        self._player_guid = str(uuid4())
+        self._chat_model = chat_model
 
     def connect(self, room_code: str) -> None:
         self._room_code = room_code
@@ -48,12 +59,14 @@ class JackBoxBotBase(ABC):
         )
         self._ws.on_open = self._on_open
 
-        ws_thread = threading.Thread(name=self._name, target=self._ws.run_forever, daemon=True)
-        ws_thread.start()
+        self._ws_thread = threading.Thread(name=self._name, target=self._ws.run_forever, daemon=True)
+        self._ws_thread.start()
 
     def disconnect(self) -> None:
         if self._ws:
             self._ws.close()
+        if self._ws_thread and self._ws_thread.is_alive():
+            self._ws_thread.join()
 
     def is_disconnected(self) -> bool:
         return self._is_disconnected
@@ -96,6 +109,8 @@ class JackBoxBotBase(ABC):
 
     def _on_message(self, wsapp, message) -> None:
         server_message = ServerMessage.model_validate_json(message)
+
+        # logger.info(server_message.result)
 
         if server_message.opcode == "client/welcome":
             self._player_id = server_message.result["id"]

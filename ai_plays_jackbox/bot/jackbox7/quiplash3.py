@@ -2,11 +2,38 @@ import random
 
 from loguru import logger
 
-from ai_plays_jackbox.ai_prompter import get_ai_response
 from ai_plays_jackbox.bot.jackbox7.bot_base import JackBox7BotBase
+
+_QUIP_PROMPT_INSTRUCTIONS_TEMPLATE = """
+You are playing Quiplash 3. You need to fill in the given prompt.
+
+When generating your response, follow these rules:
+- Your personality is: {personality}
+- You response must be 45 letters or less.
+- Do not include quotes in your response.
+"""
+
+_FINAL_QUIP_PROMPT_INSTRUCTIONS_TEMPLATE = """
+You are playing Quiplash 3 and it is the final round. The prompt will include three blanks, all of which you need to fill in.
+
+When generating your response, follow these rules:
+- Your personality is: {personality}
+- Separate your answers by the character '|', for example 'Apple|Orange|Banana'.
+- Each answer must be 45 letters or less.
+- Do not include quotes in your response.
+"""
+
+_QUIP_CHOICE_PROMPT_INSTRUCTIONS_TEMPLATE = """
+You are playing Quiplash 3 and you need to vote for your favorite response to the prompt "{prompt}".
+Choose your favorite by responding with the number next to your choice. Only respond with the number and nothing else.
+"""
+
 
 class Quiplash3Bot(JackBox7BotBase):
     _selected_avatar: bool = False
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def _handle_welcome(self, data: dict):
         pass
@@ -42,19 +69,24 @@ class Quiplash3Bot(JackBox7BotBase):
         self._selected_avatar = True
 
     def _generate_quip(self, prompt: str, final_round: bool = False) -> str:
-        num_predict = 16
+        max_tokens = 10
+        instructions = _QUIP_PROMPT_INSTRUCTIONS_TEMPLATE.format(personality=self._personality)
         if final_round:
-            formatted_prompt = _FINAL_QUIP_PROMPT_TEMPLATE.format(personality=self._personality, prompt=prompt)
-            num_predict = 32
-        else:
-            formatted_prompt = _QUIP_PROMPT_TEMPLATE.format(personality=self._personality, prompt=prompt)
-        quip = get_ai_response(formatted_prompt, num_predict=num_predict)
+            max_tokens = 32
+            instructions = _FINAL_QUIP_PROMPT_INSTRUCTIONS_TEMPLATE.format(personality=self._personality)
+        quip = self._chat_model.generate_text(
+            prompt, instructions=instructions, max_tokens=max_tokens, temperature=0.7, top_p=0.7
+        )
         return quip
 
     def _choose_favorite(self, prompt: str, choices: list[dict]) -> int:
         choices_str = "\n".join([f"{i+1}. {v['html']}" for i, v in enumerate(choices)])
-        formatted_prompt = _QUIP_CHOICE_PROMPT_TEMPLATE.format(prompt=prompt, options=choices_str)
-        response = get_ai_response(formatted_prompt, num_predict=1)
+        instructions = _QUIP_CHOICE_PROMPT_INSTRUCTIONS_TEMPLATE.format(prompt=prompt)
+        response = self._chat_model.generate_text(
+            f"Vote for your favorite response. Your options are: {choices_str}",
+            instructions=instructions,
+            max_tokens=1,
+        )
         try:
             choosen_prompt = int(response)
         except ValueError:
@@ -70,39 +102,3 @@ class Quiplash3Bot(JackBox7BotBase):
     def _choose_random_favorite(self, choices: list[dict]) -> int:
         choices = [i for i in range(0, len(choices))]
         return random.choice(choices)
-
-
-_QUIP_PROMPT_TEMPLATE = """
-You are playing Quiplash 3. You need to fill in the given prompt.
-
-When generating your response, follow these rules:
-- Your personality is: {personality}
-- You response must be 45 letters or less.
-- Do not include quotes in your response.
-
-The prompt is:
-
-{prompt}
-"""
-
-_QUIP_CHOICE_PROMPT_TEMPLATE = """
-You are playing Quiplash 3 and you need to vote for your favorite response to the prompt {prompt}. Your options are:
-
-{options}
-
-Choose your favorite by responding with the number next to your choice. Only respond with the number and nothing else.
-"""
-
-_FINAL_QUIP_PROMPT_TEMPLATE = """
-You are playing Quiplash 3 and it is the final round. The prompt will include three blanks, all of which you need to fill in.
-
-When generating your response, follow these rules:
-- Your personality is: {personality}
-- Separate your answers by the character '|', for example 'Apple|Orange|Banana'.
-- Each answer must be 45 letters or less.
-- Do not include quotes in your response.
-
-The prompt is:
-
-{prompt}
-"""
