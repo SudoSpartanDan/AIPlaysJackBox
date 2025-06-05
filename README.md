@@ -12,6 +12,8 @@ Bringing the dead internet theory to life.
 - Python 3.11+
 - [Poetry](https://python-poetry.org/)
 
+## Setup for Chat Models
+
 ### Ollama
 
 - Ollama should be installed and running
@@ -21,6 +23,19 @@ Bringing the dead internet theory to life.
 ### OpenAI
 
 - `OPENAI_API_KEY` needs to be popluated in your environment variables.
+
+### Gemini
+
+- To use the Google Cloud API:
+  - Set `GOOGLE_GEMINI_DEVELOPER_API_KEY` to your developer API key
+- To use the Google Cloud API:
+  - Set `GOOGLE_GENAI_USE_VERTEXAI` to `1`
+  - Set `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION` for your GCP Project using Vertex AI
+  - Credentials will be provided via [ADC](https://cloud.google.com/docs/authentication/provide-credentials-adc)
+    - ADC searches for credentials in the following locations:
+      - `GOOGLE_APPLICATION_CREDENTIALS` environment variable
+      - A credential file created by using the gcloud auth application-default login command
+      - The attached service account, returned by the metadata server
 
 ## Setup
 

@@ -9,6 +9,7 @@ from ai_plays_jackbox.llm.chat_model import ChatModel
 
 class OpenAIModel(ChatModel):
     _model: str
+    _open_ai_client: OpenAI
 
     def __init__(self, model: str = "gpt-4o-mini", *args, **kwargs):
         super().__init__(*args, **kwargs)

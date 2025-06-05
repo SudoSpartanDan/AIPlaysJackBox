@@ -19,6 +19,7 @@ python_dotenv = "^1.0.1"
 loguru = "^0.7.3"
 ollama = "^0.4.4"
 nicegui = "^2.18.0"
+google-genai = "^1.19.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
