@@ -25,7 +25,7 @@ Bringing the dead internet theory to life.
 ## Setup
 
 - `poetry install`
-- `poetry run app`
+- `poetry run ui`
 
 ## Linting
 

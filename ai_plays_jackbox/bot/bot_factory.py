@@ -1,6 +1,7 @@
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 from ai_plays_jackbox.bot.jackbox7.quiplash3 import Quiplash3Bot
-from ai_plays_jackbox.llm import ChatModel, OllamaModel
+from ai_plays_jackbox.llm.chat_model import ChatModel
+from ai_plays_jackbox.llm.ollama_model import OllamaModel
 
 
 class JackBoxBotFactory:

@@ -17,7 +17,8 @@ from pydantic import BaseModel, Field, field_validator
 from websocket import WebSocketApp
 
 from ai_plays_jackbox.constants import ECAST_HOST
-from ai_plays_jackbox.llm import ChatModel, OllamaModel
+from ai_plays_jackbox.llm.chat_model import ChatModel
+from ai_plays_jackbox.llm.ollama_model import OllamaModel
 
 
 class JackBoxBotBase(ABC):

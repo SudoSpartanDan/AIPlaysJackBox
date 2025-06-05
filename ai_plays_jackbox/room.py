@@ -1,5 +1,7 @@
 import random
+import threading
 from time import sleep
+from typing import Optional
 
 import requests
 from loguru import logger
@@ -8,20 +10,35 @@ from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 from ai_plays_jackbox.bot.bot_factory import JackBoxBotFactory
 from ai_plays_jackbox.bot.bot_personality import JackBoxBotVariant
 from ai_plays_jackbox.constants import ECAST_HOST
-from ai_plays_jackbox.llm import ChatModel, OllamaModel
+from ai_plays_jackbox.llm.chat_model import ChatModel
+from ai_plays_jackbox.llm.ollama_model import OllamaModel
 
 
 class JackBoxRoom:
-    _bots: list[JackBoxBotBase] = []
+    _bots: list[JackBoxBotBase]
 
-    def play(self, room_code: str, num_of_bots: int = 4, chat_model: ChatModel = OllamaModel()):
+    def __init__(self):
+        self._bots = []
+        self._lock = threading.Lock()
+
+    def play(
+        self,
+        room_code: str,
+        num_of_bots: int = 4,
+        bots_in_play: Optional[list] = None,
+        chat_model: ChatModel = OllamaModel(),
+    ):
         room_type = self._get_room_type(room_code)
         if not room_type:
             logger.error(f"Unable to find room {room_code}")
             return
         logger.info(f"We're playing {room_type}!")
         bot_factory = JackBoxBotFactory()
-        bots_to_make = random.sample(list(JackBoxBotVariant), num_of_bots)
+        if bots_in_play is None or len(bots_in_play) == 0:
+            bots_to_make = random.sample(list(JackBoxBotVariant), num_of_bots)
+        else:
+            bots_in_play_variants = [variant for variant in JackBoxBotVariant if variant.name in bots_in_play]
+            bots_to_make = random.choices(bots_in_play_variants, k=num_of_bots)
 
         for b in bots_to_make:
             bot = bot_factory.get_bot(
@@ -31,7 +48,8 @@ class JackBoxRoom:
                 chat_model=chat_model,
             )
             self._bots.append(bot)
-            bot.connect(room_code)
+            with self._lock:
+                bot.connect(room_code)
             sleep(0.5)
 
         try:
@@ -51,7 +69,8 @@ class JackBoxRoom:
 
     def end(self):
         for b in self._bots:
-            b.disconnect()
+            with self._lock:
+                b.disconnect()
 
     def _get_room_type(self, room_code: str) -> str:
         try:
