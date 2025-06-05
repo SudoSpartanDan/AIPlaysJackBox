@@ -26,8 +26,10 @@ class JackBoxRoom:
         room_code: str,
         num_of_bots: int = 4,
         bots_in_play: Optional[list] = None,
-        chat_model: ChatModel = OllamaModel(),
+        chat_model: Optional[ChatModel] = None,
     ):
+        if chat_model is None:
+            chat_model = OllamaModel()
         room_type = self._get_room_type(room_code)
         if not room_type:
             logger.error(f"Unable to find room {room_code}")

@@ -35,11 +35,13 @@ class JackBoxBotBase(ABC):
         self,
         name: str = "FunnyBot",
         personality: str = "You are the funniest bot ever.",
-        chat_model: ChatModel = OllamaModel(),
+        chat_model: Optional[ChatModel] = None,
     ):
         self._name = name
         self._personality = personality
         self._player_guid = str(uuid4())
+        if chat_model is None:
+            chat_model = OllamaModel()
         self._chat_model = chat_model
 
     def connect(self, room_code: str) -> None:
