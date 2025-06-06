@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+      - name: Update PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Update Poetry configuration
+        run: poetry config virtualenvs.create false
+      - name: Install dependencies
+        run: poetry install --sync --no-interaction
+      - name: Package project
+        run: poetry build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: distfiles
+          path: dist/
+          if-no-files-found: error
+          
+  upload-github:
+    name: Upload (GitHub)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: distfiles
+          path: dist/
+      - run: gh release upload "${TAG_NAME}" dist/*.{tar.gz,whl}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+
+  upload-pypi:
+    name: Upload (PyPI)
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/ai-plays-jackbox/
+    permissions:
+      id-token: write
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distfiles
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@v1 # v1.12.4
+        with:
+          print-hash: true
