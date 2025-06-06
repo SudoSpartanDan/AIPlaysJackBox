@@ -117,8 +117,8 @@ class JackBoxBotBase(ABC):
         elif server_message.opcode == "object" or server_message.opcode == "text":
             if server_message.opcode == "object":
                 operation = ObjectOperation(**server_message.result)
-            if server_message.opcode == "text":
-                operation = TextOperation(**server_message.result)
+            elif server_message.opcode == "text":
+                operation = TextOperation(**server_message.result)  # type: ignore
 
             if self._is_player_operation_key(operation.key):
                 self._handle_player_operation(operation.json_data)
@@ -140,7 +140,10 @@ class JackBoxBotBase(ABC):
     def _send_ws(self, opcode: str, params: dict) -> None:
         self._message_sequence += 1
         message = {"seq": self._message_sequence, "opcode": opcode, "params": params}
-        self._ws.send(json.dumps(message))
+        if self._ws is not None:
+            self._ws.send(json.dumps(message))
+        else:
+            raise Exception("Websocket connection has not been initialized")
 
     def _client_send(self, request: dict) -> None:
         self._message_sequence += 1
@@ -168,9 +171,9 @@ class TextOperation(BaseModel):
     value: str = Field(alias="val")
     version: int
 
-    @field_validator("json_data")
+    @field_validator("json_data")  # type: ignore
     def set_json_data(cls, value, values: dict):
-        return json.loads(values.get("value"))
+        return json.loads(values.get("value", ""))
 
 
 class ObjectOperation(BaseModel):
@@ -180,6 +183,6 @@ class ObjectOperation(BaseModel):
     value: str = Field(default="")
     version: int
 
-    @field_validator("value")
+    @field_validator("value")  # type: ignore
     def set_value(cls, value, values: dict):
         return json.dumps(values.get("json_data"))

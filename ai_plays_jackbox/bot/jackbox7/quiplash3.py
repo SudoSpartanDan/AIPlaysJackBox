@@ -100,5 +100,5 @@ class Quiplash3Bot(JackBox7BotBase):
             return choosen_prompt - 1
 
     def _choose_random_favorite(self, choices: list[dict]) -> int:
-        choices = [i for i in range(0, len(choices))]
-        return random.choice(choices)
+        choices_as_ints = [i for i in range(0, len(choices))]
+        return random.choice(choices_as_ints)

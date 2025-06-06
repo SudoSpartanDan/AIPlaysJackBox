@@ -21,7 +21,7 @@ class GeminiVertextAIModel(ChatModel):
         super().__init__(*args, **kwargs)
         self._gemini_vertex_ai_client = genai.Client(
             http_options=HttpOptions(api_version="v1"),
-            vertexai=os.environ.get("GOOGLE_GENAI_USE_VERTEXAI"),
+            vertexai=bool(os.environ.get("GOOGLE_GENAI_USE_VERTEXAI")),
             api_key=os.environ.get("GOOGLE_GEMINI_DEVELOPER_API_KEY"),
             project=os.environ.get("GOOGLE_CLOUD_PROJECT"),
             location=os.environ.get("GOOGLE_CLOUD_LOCATION"),
@@ -55,6 +55,6 @@ class GeminiVertextAIModel(ChatModel):
             ),
         )
 
-        text = chat_response.text.strip().replace("\n", "")
+        text = str(chat_response.text).strip().replace("\n", "")
         logger.info(f"Generated text: {text}")
         return text

@@ -3,6 +3,10 @@ from typing import Optional
 
 from loguru import logger
 from openai import OpenAI
+from openai.types.chat import (
+    ChatCompletionDeveloperMessageParam,
+    ChatCompletionUserMessageParam,
+)
 
 from ai_plays_jackbox.llm.chat_model import ChatModel
 
@@ -32,15 +36,17 @@ class OpenAIModel(ChatModel):
         if top_p is None:
             top_p = self._chat_model_top_p
 
-        instructions_formatted = {"role": "developer", "content": instructions}
         chat_response = self._open_ai_client.chat.completions.create(
             model=self._model,
-            messages=[instructions_formatted, {"role": "user", "content": prompt}],
+            messages=[
+                ChatCompletionDeveloperMessageParam(content=instructions, role="developer"),
+                ChatCompletionUserMessageParam(content=prompt, role="user"),
+            ],
             stream=False,
             max_completion_tokens=max_tokens,
             temperature=temperature,
             top_p=top_p,
         )
-        text = chat_response.choices[0].message.content.strip().replace("\n", "")
+        text = str(chat_response.choices[0].message.content).strip().replace("\n", "")
         logger.info(f"Generated text: {text}")
         return text

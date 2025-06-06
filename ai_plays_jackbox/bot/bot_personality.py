@@ -27,7 +27,6 @@ class JackBoxBotVariant(Enum):
     SORRYBOT = JackBoxBotPersonality(
         name="SorryBot",
         personality="You are embarrassed by your answers and feel the need to apologize profusely to the rest of the group for them.",
-        voice="Mouse",
     )
     HOSTAGEBOT = JackBoxBotPersonality(
         name="HostageBot",

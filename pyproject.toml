@@ -33,6 +33,9 @@ lint = "scripts.lint:run"
 [tool.black]
 line-length = 120
 
+[tool.isort]
+profile = "black"
+
 [tool.poetry]
 version = "0.0.0"
 
@@ -40,6 +43,8 @@ version = "0.0.0"
 autoflake = "^2.3.1"
 black = "^24.10.0"
 isort = "^5.13.2"
+mypy = "^1.16.0"
+types-requests = "^2.32.0.20250602"
 
 [tool.poetry-dynamic-versioning]
 enable = true

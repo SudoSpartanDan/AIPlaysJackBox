@@ -36,6 +36,6 @@ class OllamaModel(ChatModel):
             stream=False,
             options=Options(num_predict=max_tokens, temperature=temperature, top_p=top_p),
         )
-        text = chat_response.message.content.strip().replace("\n", " ")
+        text = str(chat_response.message.content).strip().replace("\n", " ")
         logger.info(f"Generated text: {text}")
         return text
