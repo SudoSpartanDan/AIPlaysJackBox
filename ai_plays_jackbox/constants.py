@@ -1,1 +1,4 @@
 ECAST_HOST = "ecast.jackboxgames.com"
+DEFAULT_TEMPERATURE = 0.5
+DEFAULT_TOP_P = 0.9
+DEFAULT_NUM_OF_BOTS = 4

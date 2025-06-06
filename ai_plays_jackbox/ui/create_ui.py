@@ -4,8 +4,14 @@ from collections import deque
 from loguru import logger
 from nicegui import ui
 
-from ai_plays_jackbox import run
 from ai_plays_jackbox.bot.bot_personality import JackBoxBotVariant
+from ai_plays_jackbox.constants import (
+    DEFAULT_NUM_OF_BOTS,
+    DEFAULT_TEMPERATURE,
+    DEFAULT_TOP_P,
+)
+from ai_plays_jackbox.llm.chat_model_factory import CHAT_MODEL_PROVIDERS
+from ai_plays_jackbox.run import run
 
 
 def _format_log(record):
@@ -26,6 +32,8 @@ game_thread = None
 
 
 def create_ui():
+    ui.page_title("AI Plays JackBox")
+
     def _handle_start_click():
         global game_thread
 
@@ -34,9 +42,10 @@ def create_ui():
             try:
                 run(
                     room_code.value.strip().upper(),
+                    chat_model_provider.value,
+                    chat_model_name=chat_model_name.value,
                     num_of_bots=num_of_bots.value,
                     bots_in_play=bots_in_play,
-                    chat_model_name=chat_model.value,
                     chat_model_temperature=temperature.value,
                     chat_model_top_p=top_p.value,
                 )
@@ -74,17 +83,26 @@ def create_ui():
         with ui.column().classes("col-span-7"):
             with ui.row():
                 ui.label("Number of Bots")
-                num_of_bots_label = ui.label("4")
+                num_of_bots_label = ui.label(str(DEFAULT_NUM_OF_BOTS))
                 num_of_bots = ui.slider(
                     min=1,
                     max=10,
-                    value=4,
+                    value=DEFAULT_NUM_OF_BOTS,
                     step=1,
                     on_change=lambda e: num_of_bots_label.set_text(f"{e.value}"),
                 )
-                chat_model = ui.select(["ollama", "openai", "gemini"], label="Chat Model", value="ollama").classes(
-                    "w-1/3"
-                )
+                chat_model_provider = ui.select(
+                    list(CHAT_MODEL_PROVIDERS.keys()),
+                    label="Chat Model Provider",
+                    value=list(CHAT_MODEL_PROVIDERS.keys())[0],
+                    on_change=lambda e: chat_model_name.set_value(CHAT_MODEL_PROVIDERS[e.value].get_default_model()),
+                ).classes("w-1/3")
+
+                chat_model_name = ui.input(
+                    label="Chat Model Name",
+                    value=CHAT_MODEL_PROVIDERS[chat_model_provider.value].get_default_model(),
+                ).classes("w-1/3")
+
                 room_code = (
                     ui.input(
                         label="Room Code",
@@ -100,7 +118,7 @@ def create_ui():
                 start_button = (
                     ui.button("Start Bots", on_click=_handle_start_click, color="green")
                     .bind_enabled_from(room_code, "error", lambda error: room_code.value and not error)
-                    .classes("w-1/3")
+                    .classes("w-full")
                 )
 
                 ui.label("Advanced Options").classes("w-full text-xl font-bold")
@@ -112,11 +130,11 @@ def create_ui():
                     focused and deterministic. We generally recommend altering this or `top_p` but
                     not both."""
                 )
-                temperature_label = ui.label("0.5").classes("w-1/6")
+                temperature_label = ui.label(str(DEFAULT_TEMPERATURE)).classes("w-1/6")
                 temperature = ui.slider(
                     min=0.0,
                     max=2.0,
-                    value=0.5,
+                    value=DEFAULT_TEMPERATURE,
                     step=0.1,
                     on_change=lambda e: temperature_label.set_text(f"{e.value}"),
                 ).classes("w-1/2")
@@ -127,11 +145,11 @@ def create_ui():
                     model considers the results of the tokens with top_p probability mass. So 0.1
                     means only the tokens comprising the top 10% probability mass are considered."""
                 )
-                top_p_label = ui.label("0.9").classes("w-1/6")
+                top_p_label = ui.label(str(DEFAULT_TOP_P)).classes("w-1/6")
                 top_p = ui.slider(
                     min=0.0,
                     max=1.0,
-                    value=0.9,
+                    value=DEFAULT_TOP_P,
                     step=0.1,
                     on_change=lambda e: top_p_label.set_text(f"{e.value}"),
                 ).classes("w-1/2")

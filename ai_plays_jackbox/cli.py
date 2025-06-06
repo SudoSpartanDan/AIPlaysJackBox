@@ -1,5 +1,11 @@
 import argparse
 
+from ai_plays_jackbox.constants import (
+    DEFAULT_NUM_OF_BOTS,
+    DEFAULT_TEMPERATURE,
+    DEFAULT_TOP_P,
+)
+from ai_plays_jackbox.llm.chat_model_factory import CHAT_MODEL_PROVIDERS
 from ai_plays_jackbox.run import run
 
 
@@ -49,42 +55,49 @@ def cli():
         metavar="WXYZ",
     )
     parser.add_argument(
-        "--chat-model-name",
+        "--chat-model-provider",
         required=True,
         help="Choose which chat model platform to use",
-        choices=("ollama", "openai", "gemini"),
+        choices=list(CHAT_MODEL_PROVIDERS.keys()),
+        type=str,
+    )
+    parser.add_argument(
+        "--chat-model-name",
+        required=False,
+        help="Choose which chat model to use",
         type=str,
     )
     parser.add_argument(
         "--num-of-bots",
         required=False,
-        default=4,
-        help="How many bots to have play (Defaults to 4)",
+        default=DEFAULT_NUM_OF_BOTS,
+        help="How many bots to have play",
         type=_validate_num_of_bots,
-        metavar="4",
+        metavar=str(DEFAULT_NUM_OF_BOTS),
     )
     parser.add_argument(
         "--temperature",
         required=False,
-        default=0.5,
-        help="Temperature for Gen AI (Defaults to 0.5)",
+        default=DEFAULT_TEMPERATURE,
+        help="Temperature for Gen AI",
         type=_validate_temperature,
-        metavar="0.5",
+        metavar=str(DEFAULT_TEMPERATURE),
     )
     parser.add_argument(
         "--top-p",
         required=False,
-        default=0.9,
-        help="Top P for Gen AI (Defaults to 0.9)",
+        default=DEFAULT_TOP_P,
+        help="Top P for Gen AI",
         type=_validate_top_p,
-        metavar="0.9",
+        metavar=str(DEFAULT_TOP_P),
     )
     args = parser.parse_args()
 
     run(
         args.room_code.upper(),
-        num_of_bots=args.num_of_bots,
+        args.chat_model_provider,
         chat_model_name=args.chat_model_name,
+        num_of_bots=args.num_of_bots,
         chat_model_temperature=args.temperature,
         chat_model_top_p=args.top_p,
     )

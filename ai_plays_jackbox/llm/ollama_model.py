@@ -1,20 +1,23 @@
 from typing import Optional
 
 from loguru import logger
-from ollama import Options, chat, list
+from ollama import Options, chat, show
 
 from ai_plays_jackbox.llm.chat_model import ChatModel
 
 
 class OllamaModel(ChatModel):
-    _model: str
 
-    def __init__(self, model: str = "gemma3:12b", *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._model = model
 
-        # Check connection, this will hard fail if connection can't be made
-        _ = list()
+        # Check connection and if model exists, this will hard fail if connection can't be made
+        # Or if the model is not found
+        _ = show(self._model)
+
+    @classmethod
+    def get_default_model(cls):
+        return "gemma3:12b"
 
     def generate_text(
         self,

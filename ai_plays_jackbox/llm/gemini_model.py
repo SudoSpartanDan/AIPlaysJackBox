@@ -8,11 +8,10 @@ from loguru import logger
 from ai_plays_jackbox.llm.chat_model import ChatModel
 
 
-class GeminiVertextAIModel(ChatModel):
-    _model: str
+class GeminiModel(ChatModel):
     _gemini_vertex_ai_client: genai.Client
 
-    def __init__(self, model: str = "gemini-2.0-flash-001", *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._gemini_vertex_ai_client = genai.Client(
             vertexai=bool(os.environ.get("GOOGLE_GENAI_USE_VERTEXAI")),
@@ -20,10 +19,14 @@ class GeminiVertextAIModel(ChatModel):
             project=os.environ.get("GOOGLE_CLOUD_PROJECT"),
             location=os.environ.get("GOOGLE_CLOUD_LOCATION"),
         )
-        self._model = model
 
-        # Check connection, this will hard fail if connection can't be made
-        _ = self._gemini_vertex_ai_client.models.list()
+        # Check connection and if model exists, this will hard fail if connection can't be made
+        # Or if the model is not found
+        _ = self._gemini_vertex_ai_client.models.get(self._model)
+
+    @classmethod
+    def get_default_model(cls):
+        return "gemini-2.0-flash-001"
 
     def generate_text(
         self,

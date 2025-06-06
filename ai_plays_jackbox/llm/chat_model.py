@@ -3,12 +3,19 @@ from typing import Optional
 
 
 class ChatModel(ABC):
-    _chat_model_temperature: float = 0.5
-    _chat_model_top_p: float = 0.9
+    _model: str
+    _chat_model_temperature: float
+    _chat_model_top_p: float
 
-    def __init__(self, chat_model_temperature: float = 0.5, chat_model_top_p: float = 0.9):
+    def __init__(self, model: str, chat_model_temperature: float = 0.5, chat_model_top_p: float = 0.9):
+        self._model = model
         self._chat_model_temperature = chat_model_temperature
         self._chat_model_top_p = chat_model_top_p
+
+    @classmethod
+    @abstractmethod
+    def get_default_model(self) -> str:
+        pass
 
     @abstractmethod
     def generate_text(

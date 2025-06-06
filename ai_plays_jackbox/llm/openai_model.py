@@ -12,16 +12,19 @@ from ai_plays_jackbox.llm.chat_model import ChatModel
 
 
 class OpenAIModel(ChatModel):
-    _model: str
     _open_ai_client: OpenAI
 
-    def __init__(self, model: str = "gpt-4o-mini", *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._open_ai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        self._model = model
 
-        # Check connection, this will hard fail if connection can't be made
-        _ = self._open_ai_client.models.list()
+        # Check connection and if model exists, this will hard fail if connection can't be made
+        # Or if the model is not found
+        _ = self._open_ai_client.models.retrieve(self._model)
+
+    @classmethod
+    def get_default_model(cls):
+        return "gpt-4o-mini"
 
     def generate_text(
         self,
