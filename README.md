@@ -16,12 +16,16 @@ pip install ai-plays-jackbox
 
 ## Usage
 
-```shell
-# Run with the Web UI (preferred experience)
-ai-plays-jackbox-ui
+### Web UI
 
-# Or via CLI
-ai-plays-jackbox --chat-model-name ollama --room-code abcd
+```shell
+ai-plays-jackbox-ui
+```
+
+### CLI
+
+```shell
+ai-plays-jackbox --chat-model-name openai --room-code abcd
 ```
 
 ```
