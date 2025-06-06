@@ -66,4 +66,4 @@ ai-plays-jackbox --chat-model-name ollama --room-code abcd
 
 ### Linting
 
-- `poetry run lint`
+- `poetry run python scripts/lint.py`

@@ -28,7 +28,6 @@ repository = "https://github.com/SudoSpartanDan/AIPlaysJackBox"
 [project.scripts]
 ai-plays-jackbox = "ai_plays_jackbox.cli:cli"
 ai-plays-jackbox-ui = "ai_plays_jackbox.web_ui:web_ui"
-lint = "scripts.lint:run"
 
 [tool.black]
 line-length = 120

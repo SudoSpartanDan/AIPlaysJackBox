@@ -1,6 +1,6 @@
 import argparse
 
-from ai_plays_jackbox import run
+from ai_plays_jackbox.run import run
 
 
 def _validate_room_code(string_to_check: str) -> str:

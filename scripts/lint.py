@@ -11,3 +11,6 @@ def run():
     for cmd in commands:
         print(f"\n>>> Running: {' '.join(cmd)}")
         subprocess.run(["poetry", "run"] + cmd, check=True)
+
+if __name__ == "__main__":
+    run()

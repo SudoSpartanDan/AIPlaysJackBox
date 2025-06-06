@@ -2,15 +2,10 @@ import os
 from typing import Optional
 
 from google import genai
-from google.genai.types import GenerateContentConfig, HttpOptions
+from google.genai.types import GenerateContentConfig
 from loguru import logger
 
 from ai_plays_jackbox.llm.chat_model import ChatModel
-
-# Set yo environment variables
-# export GOOGLE_CLOUD_PROJECT=GOOGLE_CLOUD_PROJECT
-# export GOOGLE_CLOUD_LOCATION=global
-# export GOOGLE_GENAI_USE_VERTEXAI=True
 
 
 class GeminiVertextAIModel(ChatModel):
@@ -20,7 +15,6 @@ class GeminiVertextAIModel(ChatModel):
     def __init__(self, model: str = "gemini-2.0-flash-001", *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._gemini_vertex_ai_client = genai.Client(
-            http_options=HttpOptions(api_version="v1"),
             vertexai=bool(os.environ.get("GOOGLE_GENAI_USE_VERTEXAI")),
             api_key=os.environ.get("GOOGLE_GEMINI_DEVELOPER_API_KEY"),
             project=os.environ.get("GOOGLE_CLOUD_PROJECT"),
