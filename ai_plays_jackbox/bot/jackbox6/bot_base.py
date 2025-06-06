@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 

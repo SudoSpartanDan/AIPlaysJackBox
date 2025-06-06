@@ -3,8 +3,9 @@ import subprocess
 
 def run():
     commands = [
-        ["isort", "--profile", "black", "--project=ai_plays_jackbox", "."],
-        ["black", "-l", "120", "."],
+        ["autoflake", "--in-place", "--recursive", "--remove-all-unused-imports", "--verbose", "ai_plays_jackbox"],
+        ["isort", "--profile", "black", "--project=ai_plays_jackbox", "ai_plays_jackbox"],
+        ["black", "-l", "120", "ai_plays_jackbox"],
     ]
 
     for cmd in commands:

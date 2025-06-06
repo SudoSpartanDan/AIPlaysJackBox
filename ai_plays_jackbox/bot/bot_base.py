@@ -8,7 +8,6 @@ from uuid import uuid4
 
 import html2text
 from loguru import logger
-from ollama import Options, chat
 from pydantic import BaseModel, Field, field_validator
 from websocket import WebSocketApp
 

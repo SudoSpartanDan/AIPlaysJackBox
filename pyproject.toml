@@ -37,11 +37,9 @@ line-length = 120
 version = "0.0.0"
 
 [tool.poetry.group.dev.dependencies]
+autoflake = "^2.3.1"
 black = "^24.10.0"
 isort = "^5.13.2"
-
-[tool.poetry.requires-plugins]
-poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
 
 [tool.poetry-dynamic-versioning]
 enable = true
