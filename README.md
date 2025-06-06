@@ -24,6 +24,21 @@ ai-plays-jackbox-ui
 ai-plays-jackbox --chat-model-name ollama --room-code abcd
 ```
 
+```
+usage: ai-plays-jackbox [-h] --room-code WXYZ --chat-model-provider {openai,gemini,ollama} [--chat-model-name CHAT_MODEL_NAME] [--num-of-bots 4] [--temperature 0.5] [--top-p 0.9]
+
+options:
+  -h, --help            show this help message and exit
+  --room-code WXYZ      The JackBox room code
+  --chat-model-provider {openai,gemini,ollama}
+                        Choose which chat model platform to use
+  --chat-model-name CHAT_MODEL_NAME
+                        Choose which chat model to use (Will default to default for provider)
+  --num-of-bots 4       How many bots to have play
+  --temperature 0.5     Temperature for Gen AI
+  --top-p 0.9           Top P for Gen AI
+```
+
 ## Supported Games
 
 | Party Pack            | Game                   |

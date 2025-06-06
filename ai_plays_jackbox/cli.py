@@ -64,7 +64,7 @@ def cli():
     parser.add_argument(
         "--chat-model-name",
         required=False,
-        help="Choose which chat model to use",
+        help="Choose which chat model to use (Will default to default for provider)",
         type=str,
     )
     parser.add_argument(
