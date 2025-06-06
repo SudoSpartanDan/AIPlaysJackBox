@@ -1,8 +1,8 @@
 # AI Plays JackBox
 
-[![Stable Version](https://img.shields.io/pypi/v/ai-plays-jackbox?label=stable)][PyPI Releases]
-[![Python Versions](https://img.shields.io/pypi/pyversions/ai-plays-jackbox)][PyPI]
-[![Download Stats](https://img.shields.io/pypi/dm/ai-plays-jackbox)](https://pypistats.org/packages/ai-plays-jackbox)
+![Stable Version](https://img.shields.io/pypi/v/ai-plays-jackbox?label=stable)
+![Python Versions](https://img.shields.io/pypi/pyversions/ai-plays-jackbox)
+![Download Stats](https://img.shields.io/pypi/dm/ai-plays-jackbox)
 
 Bringing the dead internet theory to life. Have AI play JackBox with you; no friends required!
 
