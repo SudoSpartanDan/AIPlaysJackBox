@@ -71,6 +71,6 @@ jobs:
         with:
           name: distfiles
           path: dist/
-      - uses: pypa/gh-action-pypi-publish@v1 # v1.12.4
+      - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           print-hash: true
