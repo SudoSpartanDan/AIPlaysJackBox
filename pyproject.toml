@@ -1,31 +1,45 @@
+[project]
+name = "ai-plays-jackbox"
+dynamic = [ "version", "classifiers" ]
+description = "Bringing the dead internet theory to life. Have AI play JackBox with you; no friends required!"
+authors = [
+    { name = "Daniel S. Thompson", email = "dthomp92@gmail.com" },
+]
+readme = "README.md"
+license = { text = "MIT" }
+keywords = [ ]
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "google-genai (>=1.19.0,<2.0.0)",
+    "html2text (>=2024.2.26, <2025.0.0)",
+    "loguru (>=0.7.3,<1.0.0)",
+    "nicegui (>=2.18.0,<3.0.0)",
+    "ollama (>=0.4.4,<1.0.0)",
+    "openai (>=1.59.8,<2.0.0)",
+    "pydantic (>=2.10.4,<3.0.0)",
+    "requests (>=2.23.3,<3.0.0)",
+    "websocket-client (>=1.8.0,<2.0.0)"
+]
+
+[project.urls]
+repository = "https://github.com/SudoSpartanDan/AIPlaysJackBox"
+"Bug Tracker" = "https://github.com/SudoSpartanDan/AIPlaysJackBox/issues"
+
+[project.scripts]
+ai-plays-jackbox = "ai_plays_jackbox.cli:cli"
+ai-plays-jackbox-ui = "ai_plays_jackbox.web_ui:web_ui"
+lint = "scripts.lint:run"
+
 [tool.black]
 line-length = 120
 
 [tool.poetry]
-name = "ai_plays_jackbox"
-version = "0.0.1"
-description = ""
-readme = "README.md"
-authors = []
-
-[tool.poetry.dependencies]
-python = "^3.11.2"
-requests = "^2.32.3"
-websocket-client = "^1.8.0"
-pydantic = "^2.10.4"
-openai = "^1.59.8"
-html2text = "^2024.2.26"
-python_dotenv = "^1.0.1"
-loguru = "^0.7.3"
-ollama = "^0.4.4"
-nicegui = "^2.18.0"
-google-genai = "^1.19.0"
+version = "0.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
 isort = "^5.13.2"
 
-[tool.poetry.scripts]
-app = "main:main"
-ui = "main:run_ui"
-lint = "scripts.lint:run"
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

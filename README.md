@@ -2,15 +2,24 @@
 
 Bringing the dead internet theory to life.
 
+## Installation
+
+```pip install ai-plays-jackbox```
+
+## Usage
+
+```shell
+# Run with the Web UI (preferred experience)
+ai-plays-jackbox-ui
+
+# Or via CLI
+ai-plays-jackbox --chat-model-name ollama --room-code abcd
+```
+
 ## Supported Games
 
 - JackBox Party Pack 7
   - Quiplash 3
-
-## Prerequisites
-
-- Python 3.11+
-- [Poetry](https://python-poetry.org/)
 
 ## Setup for Chat Models
 
@@ -37,11 +46,16 @@ Bringing the dead internet theory to life.
       - A credential file created by using the gcloud auth application-default login command
       - The attached service account, returned by the metadata server
 
-## Setup
+## Dev Prerequisites
+
+- Python 3.11+
+- [Poetry](https://python-poetry.org/) v2.0+
+
+### Setup
 
 - `poetry install`
-- `poetry run ui`
+- `ai-plays-jackbox-ui`
 
-## Linting
+### Linting
 
 - `poetry run lint`
