@@ -1,10 +1,18 @@
 # AI Plays JackBox
 
-Bringing the dead internet theory to life.
+[![Stable Version](https://img.shields.io/pypi/v/ai-plays-jackbox?label=stable)][PyPI Releases]
+[![Python Versions](https://img.shields.io/pypi/pyversions/ai-plays-jackbox)][PyPI]
+[![Download Stats](https://img.shields.io/pypi/dm/ai-plays-jackbox)](https://pypistats.org/packages/ai-plays-jackbox)
+
+Bringing the dead internet theory to life. Have AI play JackBox with you; no friends required!
+
+![alt text](.github/emoji_bot_example.png)
 
 ## Installation
 
-```pip install ai-plays-jackbox```
+```shell
+pip install ai-plays-jackbox
+```
 
 ## Usage
 
@@ -18,8 +26,8 @@ ai-plays-jackbox --chat-model-name ollama --room-code abcd
 
 ## Supported Games
 
-- JackBox Party Pack 7
-  - Quiplash 3
+### JackBox Party Pack 7
+- Quiplash 3
 
 ## Setup for Chat Models
 
