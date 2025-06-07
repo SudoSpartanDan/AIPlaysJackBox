@@ -3,6 +3,7 @@ from typing import Optional
 from ai_plays_jackbox.bot.bot_base import JackBoxBotBase
 from ai_plays_jackbox.bot.jackbox5.patently_stupid import PatentlyStupidBot
 from ai_plays_jackbox.bot.jackbox7.quiplash3 import Quiplash3Bot
+from ai_plays_jackbox.bot.standalone.drawful2 import Drawful2Bot
 from ai_plays_jackbox.llm.chat_model import ChatModel
 from ai_plays_jackbox.llm.ollama_model import OllamaModel
 
@@ -21,6 +22,8 @@ class JackBoxBotFactory:
             return Quiplash3Bot(name=name, personality=personality, chat_model=chat_model)
         elif room_type == "patentlystupid":
             return PatentlyStupidBot(name=name, personality=personality, chat_model=chat_model)
+        elif room_type == "drawful2international":
+            return Drawful2Bot(name=name, personality=personality, chat_model=chat_model)
         # elif room_type == "ridictionary":
         #     return DictionariumBot(name=name, personality=personality)
         # elif room_type == "patentlystupid":

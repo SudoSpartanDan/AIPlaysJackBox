@@ -52,7 +52,7 @@ options:
 | --------------------- | ---------------------- | ---------------- |
 | JackBox Party Pack 5  | Patently Stupid        | [x]              |
 | JackBox Party Pack 7  | Quiplash 3             | [ ]              |
-
+| Standalone            | Drawful 2              | [x]              |
 
 ## Supported Chat Model Providers
 

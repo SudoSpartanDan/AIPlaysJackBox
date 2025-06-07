@@ -6,7 +6,9 @@ from typing import Optional
 from urllib import parse
 from uuid import uuid4
 
+import cv2
 import html2text
+import numpy as np
 from loguru import logger
 from pydantic import BaseModel, Field, field_validator
 from websocket import WebSocketApp
@@ -146,12 +148,42 @@ class JackBoxBotBase(ABC):
             raise Exception("Websocket connection has not been initialized")
 
     def _client_send(self, request: dict) -> None:
-        self._message_sequence += 1
         params = {"from": self._player_id, "to": 1, "body": request}
         self._send_ws("client/send", params)
 
+    def _object_update(self, key: str, val: dict) -> None:
+        params = {"key": key, "val": val}
+        self._send_ws("object/update", params)
+
+    def _text_update(self, key: str, val: str) -> None:
+        params = {"key": key, "val": val}
+        self._send_ws("text/update", params)
+
     def _html_to_text(self, html: str) -> str:
         return html2text.html2text(html)
+
+    def _image_bytes_to_polylines(self, image_bytes: bytes, canvas_height: int, canvas_width: int) -> list[str]:
+        # Let's edge trace the outputted image to contours
+        image_array = np.frombuffer(image_bytes, dtype=np.uint8)
+        image = cv2.imdecode(image_array, flags=1)
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray_image, threshold1=100, threshold2=200)
+        contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        # Figure out scaling factor
+        height, width = gray_image.shape
+        scale_x = canvas_width / width
+        scale_y = canvas_height / height
+        scale_factor = min(scale_x, scale_y)
+
+        # generate the polylines from the contours
+        polylines = []
+        for contour in contours:
+            if len(contour) > 1:  # Only include contours with 2 or more points
+                polyline = [f"{int(point[0][0] * scale_factor)},{int(point[0][1] * scale_factor)}" for point in contour]  # type: ignore
+                polylines.append("|".join(polyline))
+
+        return polylines
 
     def __del__(self):
         self.disconnect()

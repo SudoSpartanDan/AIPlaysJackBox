@@ -1,8 +1,6 @@
 import random
 from typing import Optional
 
-import cv2
-import numpy as np
 from loguru import logger
 
 from ai_plays_jackbox.bot.jackbox5.bot_base import JackBox5BotBase
@@ -166,26 +164,4 @@ class PatentlyStupidBot(JackBox5BotBase):
             temperature=self._chat_model._chat_model_temperature,
             top_p=self._chat_model._chat_model_top_p,
         )
-
-        # Let's edge trace the outputted image to contours
-        image_array = np.frombuffer(image_bytes, dtype=np.uint8)
-        image = cv2.imdecode(image_array, flags=1)
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray_image, threshold1=100, threshold2=200)
-        contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        # Figure out scaling factor
-        height, width = gray_image.shape
-        canvas_max_x, canvas_max_y = 475, 475
-        scale_x = canvas_max_x / width
-        scale_y = canvas_max_y / height
-        scale_factor = min(scale_x, scale_y)
-
-        # generate the polylines from the contours
-        polylines = []
-        for contour in contours:
-            if len(contour) > 1:  # Only include contours with 2 or more points
-                polyline = [f"{int(point[0][0] * scale_factor)},{int(point[0][1] * scale_factor)}" for point in contour]  # type: ignore
-                polylines.append("|".join(polyline))
-
-        return polylines
+        return self._image_bytes_to_polylines(image_bytes, 475, 475)
