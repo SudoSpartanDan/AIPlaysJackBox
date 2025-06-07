@@ -75,7 +75,11 @@ class Quiplash3Bot(JackBox7BotBase):
             max_tokens = 32
             instructions = _FINAL_QUIP_PROMPT_INSTRUCTIONS_TEMPLATE.format(personality=self._personality)
         quip = self._chat_model.generate_text(
-            prompt, instructions=instructions, max_tokens=max_tokens, temperature=0.7, top_p=0.7
+            prompt,
+            instructions,
+            max_tokens=max_tokens,
+            temperature=self._chat_model._chat_model_temperature,
+            top_p=self._chat_model._chat_model_top_p,
         )
         return quip
 
@@ -84,7 +88,7 @@ class Quiplash3Bot(JackBox7BotBase):
         instructions = _QUIP_CHOICE_PROMPT_INSTRUCTIONS_TEMPLATE.format(prompt=prompt)
         response = self._chat_model.generate_text(
             f"Vote for your favorite response. Your options are: {choices_str}",
-            instructions=instructions,
+            instructions,
             max_tokens=1,
         )
         try:

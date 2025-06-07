@@ -1,3 +1,4 @@
+import base64
 import os
 from typing import Optional
 
@@ -7,6 +8,7 @@ from openai.types.chat import (
     ChatCompletionDeveloperMessageParam,
     ChatCompletionUserMessageParam,
 )
+from openai.types.responses import Response
 
 from ai_plays_jackbox.llm.chat_model import ChatModel
 
@@ -53,3 +55,26 @@ class OpenAIModel(ChatModel):
         text = str(chat_response.choices[0].message.content).strip().replace("\n", "")
         logger.info(f"Generated text: {text}")
         return text
+
+    def generate_sketch(
+        self,
+        prompt: str,
+        instructions: str,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
+    ) -> bytes:
+        image_gen_response: Response = self._open_ai_client.responses.create(
+            model=self._model,
+            instructions=instructions,
+            input=prompt,
+            temperature=temperature,
+            top_p=top_p,
+            tools=[{"type": "image_generation"}],
+        )
+        # Save the image to a file
+        image_data = [output.result for output in image_gen_response.output if output.type == "image_generation_call"]
+        image_base64 = ""
+        if image_data:
+            image_base64 = str(image_data[0])
+
+        return base64.b64decode(image_base64)

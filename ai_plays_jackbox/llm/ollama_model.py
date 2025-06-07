@@ -42,3 +42,12 @@ class OllamaModel(ChatModel):
         text = str(chat_response.message.content).strip().replace("\n", " ")
         logger.info(f"Generated text: {text}")
         return text
+
+    def generate_sketch(
+        self,
+        prompt: str,
+        instructions: str,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
+    ) -> bytes:
+        raise Exception("Ollama model not supported yet for sketches")

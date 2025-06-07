@@ -55,3 +55,32 @@ class GeminiModel(ChatModel):
         text = str(chat_response.text).strip().replace("\n", "")
         logger.info(f"Generated text: {text}")
         return text
+
+    def generate_sketch(
+        self,
+        prompt: str,
+        instructions: str,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
+    ) -> bytes:
+        image_gen_response = self._gemini_vertex_ai_client.models.generate_content(
+            model="gemini-2.0-flash-preview-image-generation",
+            contents=prompt,
+            config=GenerateContentConfig(
+                system_instruction=[instructions],
+                temperature=temperature,
+                top_p=top_p,
+                response_modalities=["IMAGE"],
+            ),
+        )
+
+        if (
+            image_gen_response.candidates
+            and image_gen_response.candidates[0].content
+            and image_gen_response.candidates[0].content.parts
+        ):
+            for part in image_gen_response.candidates[0].content.parts:
+                if part.inline_data is not None and part.inline_data.data is not None:
+                    return part.inline_data.data
+
+        return b""

@@ -45,9 +45,14 @@ options:
 
 ## Supported Games
 
-| Party Pack            | Game                   |
-| --------------------- | ---------------------- |
-| JackBox Party Pack 7  | Quiplash 3             |
+> [!NOTE]
+> Ollama Chat Model Provider does not support image generation
+
+| Party Pack            | Game                   | Image Generation |
+| --------------------- | ---------------------- | ---------------- |
+| JackBox Party Pack 5  | Patently Stupid        | [x]              |
+| JackBox Party Pack 7  | Quiplash 3             | [ ]              |
+
 
 ## Supported Chat Model Providers
 

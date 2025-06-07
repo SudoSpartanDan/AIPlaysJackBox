@@ -18,7 +18,9 @@ dependencies = [
     "openai (>=1.59.8,<2.0.0)",
     "pydantic (>=2.10.4,<3.0.0)",
     "requests (>=2.23.3,<3.0.0)",
-    "websocket-client (>=1.8.0,<2.0.0)"
+    "websocket-client (>=1.8.0,<2.0.0)",
+    "numpy (>=2.2.6,<3.0.0)",
+    "opencv-python (>=4.11.0.86,<5.0.0.0)"
 ]
 
 [project.urls]

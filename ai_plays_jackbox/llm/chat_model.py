@@ -27,3 +27,13 @@ class ChatModel(ABC):
         top_p: Optional[float] = None,
     ) -> str:
         pass
+
+    @abstractmethod
+    def generate_sketch(
+        self,
+        prompt: str,
+        instructions: str,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
+    ) -> bytes:
+        pass
