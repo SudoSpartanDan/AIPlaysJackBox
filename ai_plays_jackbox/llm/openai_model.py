@@ -69,11 +69,13 @@ class OpenAIModel(ChatModel):
             input=prompt,
             temperature=temperature,
             top_p=top_p,
-            tools=[{
-                "type": "image_generation",
-                "quality": "low",
-                "size": "1024x1024",
-            }],
+            tools=[
+                {
+                    "type": "image_generation",
+                    "quality": "low",
+                    "size": "1024x1024",
+                }
+            ],
         )
         # Save the image to a file
         image_data = [output.result for output in image_gen_response.output if output.type == "image_generation_call"]
