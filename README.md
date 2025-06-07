@@ -56,6 +56,20 @@ options:
 | JackBox Party Pack 7  | Quiplash 3             | [ ]              |
 | Standalone            | Drawful 2              | [x]              |
 
+### Not every game will get AI support. Why?
+
+#### Screen Interactions
+
+Some games require looking at the screen in order to contribute, which isn't possible unless you can screen capture the game and pass that into prompt. Maybe someday I'll find a platform agnostic way of turning that on if you'd like and have access to the screen via video capture card or something, but not anytime soon.
+
+#### Trivia Games
+
+I tested with this... AI destroys all other players and isn't necessarily funny to watch. All the bots just get everything right.
+
+#### Out Loud Play
+
+Some of the games lean heavy into players interacting with each other. Could I program that? Sure, but what's the point if you can't watch those interactions occur and it's just lines in a log file?
+
 ## Supported Chat Model Providers
 
 | Provider              | Setup Needed                   |
