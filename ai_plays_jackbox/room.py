@@ -11,7 +11,6 @@ from ai_plays_jackbox.bot.bot_factory import JackBoxBotFactory
 from ai_plays_jackbox.bot.bot_personality import JackBoxBotVariant
 from ai_plays_jackbox.constants import ECAST_HOST
 from ai_plays_jackbox.llm.chat_model import ChatModel
-from ai_plays_jackbox.llm.ollama_model import OllamaModel
 
 
 class JackBoxRoom:
@@ -24,12 +23,10 @@ class JackBoxRoom:
     def play(
         self,
         room_code: str,
+        chat_model: ChatModel,
         num_of_bots: int = 4,
         bots_in_play: Optional[list] = None,
-        chat_model: Optional[ChatModel] = None,
     ):
-        if chat_model is None:
-            chat_model = OllamaModel()
         room_type = self._get_room_type(room_code)
         if not room_type:
             logger.error(f"Unable to find room {room_code}")
@@ -45,9 +42,9 @@ class JackBoxRoom:
         for b in bots_to_make:
             bot = bot_factory.get_bot(
                 room_type,
+                chat_model,
                 name=b.value.name,
                 personality=b.value.personality,
-                chat_model=chat_model,
             )
             self._bots.append(bot)
             with self._lock:

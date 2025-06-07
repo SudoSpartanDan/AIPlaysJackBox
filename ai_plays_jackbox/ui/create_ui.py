@@ -37,6 +37,9 @@ def create_ui():
     def _handle_start_click():
         global game_thread
 
+        if game_thread and game_thread.is_alive():
+            return
+
         def _start_in_thread():
             bots_in_play = [k for k, v in bot_variant_checkbox_states.items() if v.value]
             try:
@@ -57,12 +60,19 @@ def create_ui():
         start_button.disable()
         start_button.props("color=blue")
         start_button.text = "Running..."
+        start_button.update()
 
     def _refresh_button_state():
-        if game_thread and not game_thread.is_alive():
-            start_button.enable()
-            start_button.props("color=green")
-            start_button.text = "Start Bots"
+        if not game_thread or not game_thread.is_alive():
+            if start_button.props["color"] != "green":
+                start_button.enable()
+                start_button.props("color=green")
+                start_button.text = "Start Bots"
+        else:
+            if start_button.props["color"] != "blue":
+                start_button.disable()
+                start_button.props("color=blue")
+                start_button.text = "Running..."
 
     ui.label("🤖 AI Plays JackBox").classes("text-2xl font-bold")
 

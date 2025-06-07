@@ -20,4 +20,4 @@ def run(
         chat_model_top_p=chat_model_top_p,
     )
     room = JackBoxRoom()
-    room.play(room_code, num_of_bots=num_of_bots, bots_in_play=bots_in_play, chat_model=chat_model)
+    room.play(room_code, chat_model, num_of_bots=num_of_bots, bots_in_play=bots_in_play)

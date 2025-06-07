@@ -20,7 +20,8 @@ dependencies = [
     "requests (>=2.23.3,<3.0.0)",
     "websocket-client (>=1.8.0,<2.0.0)",
     "numpy (>=2.2.6,<3.0.0)",
-    "opencv-python (>=4.11.0.86,<5.0.0.0)"
+    "opencv-python (>=4.11.0.86,<5.0.0.0)",
+    "demoji (>=1.1.0,<2.0.0)"
 ]
 
 [project.urls]
@@ -36,6 +37,10 @@ line-length = 120
 
 [tool.isort]
 profile = "black"
+
+[[tool.mypy.overrides]]
+module = ["demoji.*"]
+follow_untyped_imports = true
 
 [tool.poetry]
 version = "0.0.0"

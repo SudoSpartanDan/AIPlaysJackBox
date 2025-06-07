@@ -50,6 +50,7 @@ options:
 
 | Party Pack            | Game                   | Image Generation |
 | --------------------- | ---------------------- | ---------------- |
+| JackBox Party Pack 5  | Mad Verse City         | [ ]              |
 | JackBox Party Pack 5  | Patently Stupid        | [x]              |
 | JackBox Party Pack 7  | Quiplash 3             | [ ]              |
 | Standalone            | Drawful 2              | [x]              |
