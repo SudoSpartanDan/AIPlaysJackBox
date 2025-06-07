@@ -6,7 +6,7 @@
 
 Bringing the dead internet theory to life. Have AI play JackBox with you; no friends required!
 
-![example](.github/emoji_bot_example.png)
+![example](https://github.com/SudoSpartanDan/AIPlaysJackBox/blob/main/.github/emoji_bot_example.png?raw=true)
 
 ## Installation
 
