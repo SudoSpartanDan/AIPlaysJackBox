@@ -52,6 +52,7 @@ options:
 | --------------------- | ---------------------- | ---------------- |
 | JackBox Party Pack 5  | Mad Verse City         | [ ]              |
 | JackBox Party Pack 5  | Patently Stupid        | [x]              |
+| JackBox Party Pack 6  | Dictionarium           | [ ]              |
 | JackBox Party Pack 6  | Joke Boat              | [ ]              |
 | JackBox Party Pack 7  | Quiplash 3             | [ ]              |
 | Standalone            | Drawful 2              | [x]              |
