@@ -120,5 +120,5 @@ Some of the games lean heavy into players interacting with each other. Could I p
 
 ### Linting
 
-- `poetry run python scripts/lint.py`
+- `poetry run python ai_plays_jackbox/scripts/lint.py`
 - `poetry run mypy ai_plays_jackbox`

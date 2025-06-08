@@ -1,7 +1,7 @@
 from typing import Optional
 
 from ai_plays_jackbox.llm.chat_model_factory import ChatModelFactory
-from ai_plays_jackbox.room import JackBoxRoom
+from ai_plays_jackbox.room.room import JackBoxRoom
 
 
 def run(

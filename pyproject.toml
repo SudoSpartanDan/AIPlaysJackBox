@@ -21,7 +21,8 @@ dependencies = [
     "websocket-client (>=1.8.0,<2.0.0)",
     "numpy (>=2.2.6,<3.0.0)",
     "opencv-python (>=4.11.0.86,<5.0.0.0)",
-    "demoji (>=1.1.0,<2.0.0)"
+    "demoji (>=1.1.0,<2.0.0)",
+    "psutil (>=7.0.0,<8.0.0)"
 ]
 
 [project.urls]
@@ -29,8 +30,8 @@ repository = "https://github.com/SudoSpartanDan/AIPlaysJackBox"
 "Bug Tracker" = "https://github.com/SudoSpartanDan/AIPlaysJackBox/issues"
 
 [project.scripts]
-ai-plays-jackbox = "ai_plays_jackbox.cli:cli"
-ai-plays-jackbox-ui = "ai_plays_jackbox.web_ui:web_ui"
+ai-plays-jackbox = "ai_plays_jackbox.cli.main:main"
+ai-plays-jackbox-ui = "ai_plays_jackbox.ui.main:main"
 
 [tool.black]
 line-length = 120
@@ -51,6 +52,7 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.16.0"
 types-requests = "^2.32.0.20250602"
+types-psutil = "^7.0.0.20250601"
 
 [tool.poetry-dynamic-versioning]
 enable = true

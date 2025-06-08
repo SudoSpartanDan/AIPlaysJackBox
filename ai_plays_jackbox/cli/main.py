@@ -45,7 +45,7 @@ def _validate_top_p(string_to_check: str) -> float:
     return number_value
 
 
-def cli():
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--room-code",
@@ -104,4 +104,4 @@ def cli():
 
 
 if __name__ == "__main__":
-    cli()
+    main()
