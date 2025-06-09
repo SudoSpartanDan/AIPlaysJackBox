@@ -1,6 +1,5 @@
 from nicegui import app, ui
 
-# from ai_plays_jackbox.ui.startup import startup
 from ai_plays_jackbox.ui.startup import startup
 
 
