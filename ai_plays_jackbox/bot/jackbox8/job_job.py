@@ -199,7 +199,7 @@ class JobJobBot(JackBox8BotBase):
         num_of_answers: int,
     ) -> list[list[dict]]:
         # TODO Figure this out
-        composition_list = []
+        resume_composition_list = []
         for _ in range(0, num_of_answers):
-            composition_list.append([{"index": 0, "word": 0}])
-        return composition_list
+            resume_composition_list.append([{"index": 0, "word": 0}])
+        return resume_composition_list
