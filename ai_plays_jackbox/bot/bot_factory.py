@@ -14,6 +14,7 @@ BOT_TYPES: dict[str, type[JackBoxBotBase]] = {
     "rapbattle": MadVerseCityBot,
     "jokeboat": JokeBoatBot,
     "ridictionary": DictionariumBot,
+    # "apply-yourself": JobJobBot,
 }
 
 
