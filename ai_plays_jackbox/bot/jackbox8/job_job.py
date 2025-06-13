@@ -76,12 +76,8 @@ class JobJobBot(JackBox8BotBase):
                 prompt = data.get("prompt", "")
                 answer_key = data.get("answerKey", "")
                 stash = data.get("stash", [[]])
-                split_instructions = data.get("splitInstructions", [])
-                split_prompt = data.get("splitPrompt", [])
                 max_words = data.get("maxWords", 12)
-                composition_list = self._generate_composition_list(
-                    prompt, split_instructions, split_prompt, stash, max_words
-                )
+                composition_list = self._generate_composition_list(prompt, stash, max_words)
                 self._object_update(
                     answer_key,
                     {
@@ -94,13 +90,11 @@ class JobJobBot(JackBox8BotBase):
                 prompt = data.get("prompt", "")
                 answer_key = data.get("answerKey", "")
                 stash = data.get("stash", [[]])
-                split_instructions = data.get("splitInstructions", [])
-                split_prompt = data.get("splitPrompt", [])
                 max_words = data.get("maxWords", 12)
                 max_words_per_answer = data.get("maxWordsPerAnswer", 8)
                 num_answers = data.get("numAnswers", 8)
                 resume_composition_list = self._generate_resume_composition_list(
-                    prompt, split_instructions, split_prompt, stash, max_words, max_words_per_answer, num_answers
+                    prompt, stash, max_words, max_words_per_answer, num_answers
                 )
                 self._object_update(
                     answer_key,
@@ -140,20 +134,11 @@ class JobJobBot(JackBox8BotBase):
     def _generate_composition_list(
         self,
         prompt: str,
-        split_instructions: list[str],
-        split_prompt: list[str],
         stash: list[list[str]],
         max_words: int,
     ) -> list[dict]:
 
         possible_word_choices = []
-
-        # Commented out for now since the AI tended to use these words more
-        # for word in split_instructions:
-        #     possible_word_choices.append(word)
-
-        # for word in split_prompt:
-        #     possible_word_choices.append(word)
 
         for stash_entry in stash:
             for word in stash_entry:
@@ -183,16 +168,6 @@ class JobJobBot(JackBox8BotBase):
             if not all(char in string.punctuation for char in response_word):
                 response_word = response_word.translate(str.maketrans("", "", string.punctuation)).lower()
 
-            # Commented out for now since the AI tended to use these words more
-            # for check_word in split_instructions + split_prompt:
-            #     if response_word == check_word.lower():
-            #         composition_list.append({
-            #             "index": -1,
-            #             "word": response_word,
-            #         })
-            #         found_word = True
-            #         break
-
             if not found_word:
                 for stash_index, stash_entry in enumerate(stash):
                     for check_word_index, check_word in enumerate(stash_entry):
@@ -218,8 +193,6 @@ class JobJobBot(JackBox8BotBase):
     def _generate_resume_composition_list(
         self,
         prompt: str,
-        split_instructions: list[str],
-        split_prompt: list[str],
         stash: list[list[str]],
         max_words: int,
         max_words_per_answers: int,
@@ -229,5 +202,4 @@ class JobJobBot(JackBox8BotBase):
         composition_list = []
         for _ in range(0, num_of_answers):
             composition_list.append([{"index": 0, "word": 0}])
-        {"index": 0, "word": 0}
         return composition_list
