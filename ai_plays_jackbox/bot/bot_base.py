@@ -2,7 +2,7 @@ import json
 import threading
 import traceback
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Union
 from urllib import parse
 from uuid import uuid4
 
@@ -110,18 +110,17 @@ class JackBoxBotBase(ABC):
     def _on_message(self, wsapp, message) -> None:
         server_message = ServerMessage.model_validate_json(message)
 
-        # logger.info(server_message.result)
-
         if server_message.opcode == "client/welcome":
             self._player_id = server_message.result["id"]
             self._handle_welcome(server_message.result)
 
-        elif server_message.opcode == "object" or server_message.opcode == "text":
-            if server_message.opcode == "object":
-                operation = ObjectOperation(**server_message.result)
-            elif server_message.opcode == "text":
-                operation = TextOperation(**server_message.result)  # type: ignore
+        operation: Optional[Union[ObjectOperation, TextOperation]] = None
+        if server_message.opcode == "object":
+            operation = ObjectOperation(**server_message.result)
+        elif server_message.opcode == "text":
+            operation = TextOperation(**server_message.result)
 
+        if operation is not None:
             if self._is_player_operation_key(operation.key):
                 self._handle_player_operation(operation.json_data)
             if self._is_room_operation_key(operation.key):

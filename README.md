@@ -1,4 +1,4 @@
-# AI Plays JackBox
+# ai-plays-jackbox
 
 ![Stable Version](https://img.shields.io/pypi/v/ai-plays-jackbox?label=stable)
 ![Python Versions](https://img.shields.io/pypi/pyversions/ai-plays-jackbox)
