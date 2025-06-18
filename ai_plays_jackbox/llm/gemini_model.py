@@ -22,7 +22,7 @@ class GeminiModel(ChatModel):
 
         # Check connection and if model exists, this will hard fail if connection can't be made
         # Or if the model is not found
-        _ = self._gemini_vertex_ai_client.models.get(self._model)
+        _ = self._gemini_vertex_ai_client.models.get(model=self._model)
 
     @classmethod
     def get_default_model(cls):
