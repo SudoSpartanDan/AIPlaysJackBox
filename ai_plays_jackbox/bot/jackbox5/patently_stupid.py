@@ -12,6 +12,7 @@ When generating your response, follow these rules:
 - Your personality is: {personality}
 - You response must be 45 letters or less.
 - Do not include quotes in your response.
+- Only fill in the blank; do not repeat the other parts of the prompt.
 
 Fill in the blank:
 
