@@ -1,5 +1,6 @@
 import argparse
 
+from ai_plays_jackbox.bot.bot_personality import JackBoxBotVariant
 from ai_plays_jackbox.constants import (
     DEFAULT_NUM_OF_BOTS,
     DEFAULT_TEMPERATURE,
@@ -76,6 +77,14 @@ def main():
         metavar=str(DEFAULT_NUM_OF_BOTS),
     )
     parser.add_argument(
+        "--bots-in-play",
+        required=False,
+        nargs="*",
+        help="Which bots are in play?",
+        choices=[variant.name for variant in JackBoxBotVariant],
+        type=str,
+    )
+    parser.add_argument(
         "--temperature",
         required=False,
         default=DEFAULT_TEMPERATURE,
@@ -98,6 +107,7 @@ def main():
         args.chat_model_provider,
         chat_model_name=args.chat_model_name,
         num_of_bots=args.num_of_bots,
+        bots_in_play=args.bots_in_play,
         chat_model_temperature=args.temperature,
         chat_model_top_p=args.top_p,
     )
