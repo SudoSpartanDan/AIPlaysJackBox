@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: distfiles
           path: dist/
@@ -66,7 +66,7 @@ jobs:
       id-token: write
     needs: build
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: distfiles
           path: dist/
