@@ -52,7 +52,7 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.17.1"
 types-requests = "^2.32.4.20250809"
-types-psutil = "^7.0.0.20250601"
+types-psutil = "^7.0.0.20250822"
 
 [tool.poetry-dynamic-versioning]
 enable = true
